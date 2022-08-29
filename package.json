@@ -1,0 +1,24 @@
+{
+  "name": "david_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "apiScript.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/u0024window/david_api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/u0024window/david_api/issues"
+  },
+  "homepage": "https://github.com/u0024window/david_api#readme",
+  "dependencies": {
+    "node-fetch": "^3.2.10",
+    "react": "^18.2.0",
+    "xlsx": "^0.18.5"
+  }
+}
