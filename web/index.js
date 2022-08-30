@@ -1,4 +1,6 @@
 import * as XLSX from 'xlsx/xlsx.mjs';
+import Table from 'rc-table';
+import React from 'react';
 
 function handleFilesUpload(e) {
   const file = e.target.files[0];
@@ -10,5 +12,10 @@ function handleFilesUpload(e) {
 
 
   function excelTotable(){
-      
+    var columns=[]
+    var data=[]
   }
+
+  const container = document.getElementById('app');
+  
+  

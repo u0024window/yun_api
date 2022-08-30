@@ -18,6 +18,7 @@
   "homepage": "https://github.com/u0024window/david_api#readme",
   "dependencies": {
     "node-fetch": "^3.2.10",
+    "rc-table": "^7.27.1",
     "react": "^18.2.0",
     "xlsx": "^0.18.5"
   }

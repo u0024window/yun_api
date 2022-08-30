@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <header></header>
+    <header>
+        <link rel="stylesheet" href="/web/index.css">
+    </header>
     <body>
-        <input type="file" 	onchange="handleFilesUpload()" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <div id="app"></div>
     </body>
     <script type="module" src="/node_modules/xlsx/xlsx.mjs"></script>
     <script type="module" src="/node_modules/react"></script>
