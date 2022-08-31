@@ -11,12 +11,9 @@ app.use(express.static('web'));
 app.post('/createOrder',async function (req, res) {
     const { url, authorization, data } = req.body
     var result=[]
-    for(var i=0;i<data.length;i++){
-        var res = await createOrder(url, authorization, it.data[i])
-        console.log(res)
-        result.push(res) 
-    }
-  
+    var resData = await createOrder(url, authorization, data)
+    result.push(resData) 
+
     console.log('result',result)
     res.send(result)
 
@@ -25,7 +22,7 @@ app.post('/createOrder',async function (req, res) {
 
 app.post('/printLabel', function (req, res) {
     res.send('hello world')
-    const { url, authorization, body } = req.body
+    const { url, authorization, data } = req.body
     res.send(printLabel(url, authorization, body))
 })
 

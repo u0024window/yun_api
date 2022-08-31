@@ -12,14 +12,10 @@ export default async function createOrder(url, authorization, body) {
             },
 
         });
-        return {
-            message: 'success',
-            data: res.data,
-        }
+        return res.data
     } catch {
         return {
             message: 'error',
-            data: res.data,
         }
     }
 

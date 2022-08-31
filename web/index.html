@@ -24,8 +24,16 @@
         <h3>API</h3>
         <div id="app">
             <div>
-                <label for="apiurl">API URL</label>
-                <input id="apiurl" type="text" style="width: 500px;">
+                <label for="createOrderUrl">createOrder URL</label>
+                <input id="createOrderUrl" type="text" style="width: 500px;">
+            </div>
+            <div>
+                <label for="printLabelUrl">printLabel URL</label>
+                <input id="printLabelUrl" type="text" style="width: 500px;">
+            </div>
+            <div>
+                <label for="rateQueryUrl">rateQuery URL</label>
+                <input id="rateQueryUrl" type="text" style="width: 500px;">
             </div>
             <div>
                 <label for="apitoken">authorization</label>
@@ -41,10 +49,16 @@
     <section>
         <h3>Action</h3>
         <div>
-            <button id="createOrder" data-req="">createOrder</button>
-            <button id="printLabel" data-req="">printLabel</button>
-            <button id="estimate" data-req="">estimate</button>
+            <button id="createOrder" data-req="" data-res="">createOrder</button>
+            <button id="printLabel" data-req="" data-res="">printLabel</button>
+            <button id="estimate" data-req="" data-res="">rate query</button>
         </div>
+    </section>
+    <section>
+        <h3>Log</h3>
+        <pre id="log">
+            
+        </pre>
     </section>
     <section>
         <h3>Table</h3>

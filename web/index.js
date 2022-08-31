@@ -15,10 +15,21 @@ $('#input-excel').change(function (e) {
     const wsname = wb.SheetNames[0];
     excelData = XLSX.utils.sheet_to_json(wb.Sheets[wsname]);
     console.log(excelData)
+    excelData = excelData.map(it => {
+      for (var key in it) {
+        if (it[key] && typeof (it[key]) != 'number') {
+          it[key]= it[key].replace(/"/g, '')
+        }
+      }
+      return it
+    })
+    console.log(excelData)
     columns = Object.keys(excelData[0]).map(it => {
-      return {
-        data: it.replace(/\./g, '\\.'),
-        title: it
+      if (it) {
+        return {
+          data: it.replace(/\./g, '\\.'),
+          title: it
+        }
       }
     })
 
@@ -51,7 +62,9 @@ $('#input-excel').change(function (e) {
     }
 
     var reExData = excelData.map(it => {
-      return transformObj(it)
+      var obj = transformObj(it)
+      obj.Parcels = [obj.Parcels]
+      return obj
     })
     $('#createOrder').attr('data-req', JSON.stringify(reExData))
 
@@ -59,7 +72,7 @@ $('#input-excel').change(function (e) {
     console.log('transformObj', reExData);
 
 
-
+    
 
 
 
@@ -81,4 +94,5 @@ $('#input-excel').change(function (e) {
 
 
 })
+
 
