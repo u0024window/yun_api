@@ -1,8 +1,10 @@
 
-
+var host = '127.0.0.1'
 $('#createOrder').click(()=>{
     axios.post('/createOrder', {
-        data: JSON.parse($('#createOrder').attr('data-req'))
+        data: JSON.parse($('#createOrder').attr('data-req')),
+        authorization: $('#apitoken').val(),
+        url: $('#apiurl').val()
     })
         .then(function (response) {
             console.log(response);
@@ -14,8 +16,10 @@ $('#createOrder').click(()=>{
 })
 
 $('#printLabel').click(() => {
-    axios.post('/printLabel', {
-        data: JSON.parse($('#printLabel').attr('data-req'))
+    axios.post(host + '/printLabel', {
+        data: JSON.parse($('#printLabel').attr('data-req')),
+        authorization: $('#apitoken').val(),
+        url: $('#apiurl').val()
     })
         .then(function (response) {
             console.log(response);
@@ -27,8 +31,10 @@ $('#printLabel').click(() => {
 })
 
 $('#estimate').click(() => {
-    axios.post('/estimate', {
-        data: JSON.parse($('#estimate').attr('data-req'))
+    axios.post(host + '/estimate', {
+        data: JSON.parse($('#estimate').attr('data-req')),
+        authorization: $('#apitoken').val(),
+        url: $('#apiurl').val()
     })
         .then(function (response) {
             console.log(response);

@@ -15,8 +15,7 @@ $('#input-excel').change(function (e) {
     const wsname = wb.SheetNames[0];
     excelData = XLSX.utils.sheet_to_json(wb.Sheets[wsname]);
     console.log(excelData)
-    $('#createOrder').attr('data-req', JSON.stringify(excelData))
-    columns = Object.keys(excelData[0]).map(it=>{
+    columns = Object.keys(excelData[0]).map(it => {
       return {
         data: it.replace(/\./g, '\\.'),
         title: it
@@ -37,10 +36,49 @@ $('#input-excel').change(function (e) {
 
 
 
+
+    const transformObj = obj => {
+      return Object.keys(obj).reduce((acc, key) => {
+        if (key.indexOf('.') >= 0) {
+          const [parentKey, childKey] = key.split('.');
+          acc[parentKey] = acc[parentKey] || {};
+          acc[parentKey][childKey] = obj[key];
+        } else {
+          acc[key] = obj[key];
+        }
+        return acc;
+      }, {});
+    }
+
+    var reExData = excelData.map(it => {
+      return transformObj(it)
+    })
+    $('#createOrder').attr('data-req', JSON.stringify(reExData))
+
+
+    console.log('transformObj', reExData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
 
 
-  
+
+
+
 })
 
