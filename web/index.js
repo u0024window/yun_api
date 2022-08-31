@@ -1,5 +1,7 @@
+var excelData
+var columns
 $('#input-excel').change(function (e) {
-  const file = event.target.files[0];
+  const file = e.target.files[0];
   const reader = new FileReader();
 
   reader.readAsArrayBuffer(file);
@@ -11,37 +13,34 @@ $('#input-excel').change(function (e) {
     console.log(wb.Sheets)
 
     const wsname = wb.SheetNames[0];
-    const data = XLSX.utils.sheet_to_json(wb.Sheets[wsname]);
-    console.log(data)
-  }
-})
-$('#excelTable').DataTable({
-    paging: false,
-    searching: false,
-    data: [
-      {
-        "name": "Tiger Nixon",
-        "position": "System Architect",
-        "salary": "$3,120",
-        "start_date": "2011/04/25",
-        "office": "Edinburgh",
-        "extn": "5421"
-      },
-      {
-        "name": "Garrett Winters",
-        "position": "Director",
-        "salary": "$5,300",
-        "start_date": "2011/07/25",
-        "office": "Edinburgh",
-        "extn": "8422"
+    excelData = XLSX.utils.sheet_to_json(wb.Sheets[wsname]);
+    console.log(excelData)
+    $('#createOrder').attr('data-req', JSON.stringify(excelData))
+    columns = Object.keys(excelData[0]).map(it=>{
+      return {
+        data: it.replace(/\./g, '\\.'),
+        title: it
       }
-    ],
-    columns: [
-      { title: 'name', data: 'name' },
-      { title: 'salary', data: 'salary' },
-      { title: 'office', data: 'office' },
-      { title: 'position', data: 'position' },
-      { title: 'start_date', data: 'start_date' },
-      { title: 'extn', data: 'extn' }
-    ]
-  });
+    })
+
+    console.log(columns)
+
+
+    $('#excelTable').DataTable({
+      paging: false,
+      searching: false,
+      scrollX: true,
+      scrollY: true,
+      data: excelData,
+      columns: columns
+    });
+
+
+
+  }
+
+
+
+  
+})
+
