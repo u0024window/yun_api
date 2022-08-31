@@ -1,12 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <header>
-        <link rel="stylesheet" href="/web/index.css">
-    </header>
-    <body>
-        <div id="app"></div>
-    </body>
-    <script type="module" src="/node_modules/xlsx/xlsx.mjs"></script>
-    <script type="module" src="/node_modules/react"></script>
-    <script type="text/javascript" src="/web/index.js"></script>
+<header>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="/web/index.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</header>
+
+<body>
+    <section>
+        <h3>login</h3>
+        <div>
+            <label for="email">email</label>
+            <input id="email" type="email">
+        </div>
+        <div>
+            <label for="password">password</label>
+            <input id="password" type="password">
+        </div>
+        <button>login</button>
+    </section>
+    <section>
+        <h3>API</h3>
+        <div id="app">
+            <div>
+                <label for="apiurl">API URL</label>
+                <input id="apiurl" type="text" style="width: 500px;">
+            </div>
+            <div>
+                <label for="apitoken">authorization</label>
+                <input id="apitoken" type="text" style="width: 500px;">
+            </div>
+            <div>
+                <label for="uploadexcel">uploadexcel</label>
+                <input type="file" id="uploadexcel" onchange="handleFilesUpload"
+                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>Action</h3>
+        <div>
+            <button>createOrder</button>
+            <button>printLabel</button>
+            <button>estimate</button>
+        </div>
+    </section>
+    <section>
+        <h3>Table</h3>
+        <table id="excelTable" class="display">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </section>
+</body>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<script src="/web/index.js"></script>
+
 </html>
