@@ -10,7 +10,6 @@ export default async function createOrder(url, authorization, body) {
                 Authorization: authorization,
                 'Content-Type': 'application/json;charset=UTF-8'
             },
-
         });
         return res.data
     } catch {

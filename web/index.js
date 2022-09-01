@@ -96,3 +96,18 @@ $('#input-excel').change(function (e) {
 })
 
 
+
+
+$(document).ready(function(){
+  $('#createOrderUrl').val('https://gapi.yunexpressusa.com/api/WayBill/CreateOrder')
+  $('#printLabelUrl').val('https://gapi.yunexpressusa.com/api/Label/Print')
+  $('#rateQueryUrl').val('https://gapi.yunexpressusa.com/api/Freight/GetPriceTrial')
+  $('#apitoken').val('Basic MDAwMDEmSGZRNW5CRE8wYnc9')
+});
+
+
+
+
+$('#logClear').click(()=>{
+  $('#labelResult').html('')
+})

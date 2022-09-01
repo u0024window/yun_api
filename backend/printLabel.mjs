@@ -12,14 +12,11 @@ export default async function printLabel(url, authorization, body) {
       },
 
     });
-    return {
-      message: 'success',
-      data: res,
-    }
+    console.log(res.data['Item'])
+    return res.data['Item']
   } catch {
     return {
       message: 'error',
-      data: res,
     }
   }
 

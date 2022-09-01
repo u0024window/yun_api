@@ -1,20 +1,17 @@
-var host = '127.0.0.1'
 $('#createOrder').click(()=>{
-    localStorage.setItem('url',$('#apiurl').val())
+    localStorage.setItem('url',$('#createOrderUrl').val())
     localStorage.setItem('authorization',$('#apitoken').val())
     axios.post('/createOrder', {
         data: JSON.parse($('#createOrder').attr('data-req')),
         authorization: $('#apitoken').val(),
-        url: $('#apiurl').val()
+        url: $('#createOrderUrl').val()
     })
         .then(function (response) {
-            console.log(response.data);
-            document.getElementById("log").innerHTML = JSON.stringify(response.data, null, 4);
             var createOrderAttr=response.data[0]['Item'].map(it=>{
                 return it['WayBillNumber']
             })
             $('#createOrder').attr('data-res',JSON.stringify(createOrderAttr))
-            $('#log').text('WayBillNumber:'+JSON.stringify(createOrderAttr))
+            $('#labelResult').append('<p>WayBillNumber:'+JSON.stringify(createOrderAttr)+"</p>")
 
         })
         .catch(function (error) {
@@ -26,14 +23,16 @@ $('#createOrder').click(()=>{
 $('#printLabel').click(() => {
    var dataWayBillNumbers=JSON.parse($('#createOrder').attr('data-res'))
 
-
-    axios.post(host + '/printLabel', {
+    axios.post('/printLabel', {
         data: dataWayBillNumbers,
         authorization: $('#apitoken').val(),
-        url: $('#apiurl').val()
+        url: $('#printLabelUrl').val()
     })
         .then(function (response) {
-            console.log(response);
+            console.log(response.data);
+            response.data.forEach(it => {
+                $('#labelResult').append('<embed src='+it.Url+'>')
+            });
         })
         .catch(function (error) {
             console.log(error);
@@ -42,7 +41,7 @@ $('#printLabel').click(() => {
 })
 
 $('#estimate').click(() => {
-    axios.post(host + '/estimate', {
+    axios.post('/estimate', {
         data: JSON.parse($('#estimate').attr('data-req')),
         authorization: $('#apitoken').val(),
         url: $('#apiurl').val()

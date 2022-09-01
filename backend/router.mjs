@@ -14,23 +14,21 @@ app.post('/createOrder',async function (req, res) {
     var resData = await createOrder(url, authorization, data)
     result.push(resData) 
 
-    console.log('result',result)
     res.send(result)
 
 })
 
 
-app.post('/printLabel', function (req, res) {
-    res.send('hello world')
+app.post('/printLabel',async function (req, res) {
     const { url, authorization, data } = req.body
-    res.send(printLabel(url, authorization, body))
+    var result= await printLabel(url, authorization, data)
+    res.send(result)
 })
 
 app.get('/estimate', function (req, res) {
-    res.send('hello world')
     const { url, authorization, params } = req.query
     res.send(estimate(url, authorization, params))
 })
 
 
-app.listen(80)
+app.listen(8090)
