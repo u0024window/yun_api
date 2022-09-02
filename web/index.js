@@ -117,6 +117,7 @@ $(document).ready(function(){
   $('#createOrderUrl').val('https://gapi.yunexpressusa.com/api/WayBill/CreateOrder')
   $('#printLabelUrl').val('https://gapi.yunexpressusa.com/api/Label/Print')
   $('#rateQueryUrl').val('https://gapi.yunexpressusa.com/api/Freight/GetPriceTrial')
+  $('#trackingUrl').val('https://gapi.yunexpressusa.com/api/Tracking/GetTrackInfo')
   $('#apitoken').val('Basic MDAwMDEmSGZRNW5CRE8wYnc9')
 });
 

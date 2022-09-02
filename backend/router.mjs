@@ -2,7 +2,7 @@ import express, { json } from 'express'
 import createOrder from './createOrder.mjs'
 import printLabel from './printLabel.mjs'
 import rateQuery from './rateQuery.mjs'
-
+import tracking from './tracking.mjs'
 var app = express()
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
@@ -63,5 +63,24 @@ app.post('/rateQuery',async function (req, res) {
     }
 })
 
+app.post('/tracking', async function (req, res) {
+    var trankingres = []
+    try {
+        const { url, authorization, query } = req.body
+        for (var i = 0; i < query.length; i++) {
+            var result = await tracking(url, authorization, query[i])
+            trankingres.push(result)
+        }
+        var isSuccess = trankingres.every(it => it == '0000')
+        res.send({
+            result: trankingres,
+            code: 0
+        })
+    } catch {
+        res.send({
+            message: 'error'
+        })
+    }
+})
 
-app.listen(8090)
+app.listen(80)

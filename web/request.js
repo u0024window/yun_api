@@ -12,6 +12,7 @@ $('#createOrder').click(() => {
                 return it['WayBillNumber']
             })
             $('#createOrder').attr('data-res', JSON.stringify(createOrderAttr))
+            $('#tracking').attr('data-req', JSON.stringify(createOrderAttr))
             $('#labelResult').append('<p>WayBillNumber:' + JSON.stringify(createOrderAttr) + "</p>")
 
             if (response.data.code == '0') {
@@ -75,15 +76,36 @@ $('#rateQuery').click(() => {
 })
 
 
+$('#tracking').click(() => {
+    axios.post('/tracking', {
+        query: JSON.parse($('#tracking').attr('data-req')),
+        authorization: $('#apitoken').val(),
+        url: $('#trackingUrl').val()
+    })
+        .then(function (response) {
+            var res = response.data.result
+            $('#labelResult').append('<p>' + res + '</p>')
+
+            if (response.data.code == '0') {
+                $('#tracking').css('color', 'green')
+            } else {
+                $('#tracking').css('color', 'red')
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+})
+
 
 $('#carrier').click(() => {
     $('#tip').text('loading……')
     $('#createOrder').click()
+    $('#rateQuery').click()
     setTimeout(() => {
         $('#printLabel').click()
-    }, 10 * 1000)
-    setTimeout(() => {
-        $('#rateQuery').click()
+        $('#tracking').click()
         $('#tip').text('')
-    }, 20 * 1000)
+    }, 10 * 1000)
 })
