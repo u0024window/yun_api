@@ -10,7 +10,6 @@ $('#input-excel').change(function (e) {
     // upload file
     const binarystr = new Uint8Array(e.target.result);
     const wb = XLSX.read(binarystr, { type: 'array', raw: true, cellFormula: false });
-    console.log(wb.Sheets)
 
     const wsname = wb.SheetNames[0];
     excelData = XLSX.utils.sheet_to_json(wb.Sheets[wsname]);
@@ -24,6 +23,22 @@ $('#input-excel').change(function (e) {
       return it
     })
     console.log(excelData)
+
+    //get Weight Receiver.Zip
+    var rateQueryParam = excelData.map(it=>{
+      return {
+        CountryCode:'US',
+        Weight: it['Weight'],
+        Length:1,
+        Width:1,
+        Height:1,
+        PackageType:0,
+        PostCode: it['Receiver.Zip'],
+        Origin:'CE'
+      }
+    })
+    console.log('rateQueryParam', rateQueryParam)
+    $('#rateQuery').attr('data-req', JSON.stringify(rateQueryParam))
     columns = Object.keys(excelData[0]).map(it => {
       if (it) {
         return {
@@ -102,6 +117,7 @@ $(document).ready(function(){
   $('#createOrderUrl').val('https://gapi.yunexpressusa.com/api/WayBill/CreateOrder')
   $('#printLabelUrl').val('https://gapi.yunexpressusa.com/api/Label/Print')
   $('#rateQueryUrl').val('https://gapi.yunexpressusa.com/api/Freight/GetPriceTrial')
+  $('#trackingUrl').val('https://gapi.yunexpressusa.com/api/Tracking/GetTrackInfo')
   $('#apitoken').val('Basic MDAwMDEmSGZRNW5CRE8wYnc9')
 });
 
