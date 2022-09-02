@@ -64,4 +64,4 @@ app.post('/rateQuery',async function (req, res) {
 })
 
 
-app.listen(80)
+app.listen(8090)
