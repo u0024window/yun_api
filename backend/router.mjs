@@ -83,4 +83,26 @@ app.post('/tracking', async function (req, res) {
     }
 })
 
+app.post('/login',(req,res)=>{
+    try{
+        const {user,password}=req.body
+        if(user=='admin' && password=='8aW6ulnWBODgACm6'){
+            res.send({
+                code:0,
+                message:'success'
+            })
+        }
+        verfiy(user,password)
+    }catch{
+        res.send({
+            code:1,
+            message:'error'
+        })
+    }
+})
+
+
+
+
+
 app.listen(80)
