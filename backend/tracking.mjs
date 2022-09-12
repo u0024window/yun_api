@@ -17,6 +17,7 @@ export default async function tracking(url, authorization, params) {
     } catch {
         return {
             message: 'error',
+            data: res.data
         }
     }
 

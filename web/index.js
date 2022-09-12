@@ -11,9 +11,14 @@ $('#input-excel').change(function (e) {
     const binarystr = new Uint8Array(e.target.result);
     const wb = XLSX.read(binarystr, { type: 'array', raw: true, cellFormula: false });
 
-    const wsname = wb.SheetNames[0];
-    excelData = XLSX.utils.sheet_to_json(wb.Sheets[wsname]);
+    excelData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+    excelData1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[1]]);
+    excelData2 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[2]]);
+    excelData3 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[3]]);
     console.log(excelData)
+    console.log(excelData1)
+    console.log(excelData2)
+    console.log(excelData3)
     excelData = excelData.map(it => {
       for (var key in it) {
         if (it[key] && typeof (it[key]) != 'number') {

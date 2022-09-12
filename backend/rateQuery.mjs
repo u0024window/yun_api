@@ -15,6 +15,7 @@ export default async function rateQuery(url, authorization, params) {
     } catch {
         return {
             message: 'error',
+            data: res.data
         }
     }
 

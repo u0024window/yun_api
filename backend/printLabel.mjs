@@ -17,6 +17,7 @@ export default async function printLabel(url, authorization, body) {
   } catch {
     return {
       message: 'error',
+      data: res.data
     }
   }
 

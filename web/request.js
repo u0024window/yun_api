@@ -19,6 +19,8 @@ $('#createOrder').click(() => {
                 $('#createOrder').css('color', 'green')
             } else {
                 $('#createOrder').css('color', 'red')
+                $('#log').append('<p>' + response.data.data+'</p>')
+
             }
         })
         .catch(function (error) {
@@ -45,6 +47,7 @@ $('#printLabel').click(() => {
                 $('#printLabel').css('color', 'green')
             } else {
                 $('#printLabel').css('color', 'red')
+                $('#log').append('<p>' + response.data.data + '</p>')
             }
         })
         .catch(function (error) {
@@ -67,6 +70,7 @@ $('#rateQuery').click(() => {
                 $('#rateQuery').css('color', 'green')
             } else {
                 $('#rateQuery').css('color', 'red')
+                $('#log').append('<p>' + response.data.data + '</p>')
             }
         })
         .catch(function (error) {
@@ -90,6 +94,7 @@ $('#tracking').click(() => {
                 $('#tracking').css('color', 'green')
             } else {
                 $('#tracking').css('color', 'red')
+                $('#log').append('<p>' + response.data.data + '</p>')
             }
         })
         .catch(function (error) {
