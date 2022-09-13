@@ -1,3 +1,4 @@
+var carrierStatus=[]
 $('#createOrder').click(() => {
     for (var i in tableArr) {
         ((i) => {
@@ -29,8 +30,10 @@ $('#createOrder').click(() => {
                     $('#labelResult').append('<p>WayBillNumber:' + JSON.stringify(createOrderAttr) + "</p>")
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#createOrder').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#createOrder').css('color', 'red')
                         $('#log').append(`<p>table${i}` + response.data.data + '</p>')
 
@@ -63,8 +66,10 @@ $('#printLabel').click(() => {
                     });
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#printLabel').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#printLabel').css('color', 'red')
                         $('#log').append('<p>' + response.data.data + '</p>')
                     }
@@ -93,8 +98,10 @@ $('#rateQuery').click(() => {
                     $('#labelResult').append('<p>' + res + '</p>')
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#rateQuery').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#rateQuery').css('color', 'red')
                         $('#log').append('<p>' + response.data.data + '</p>')
                     }
@@ -123,8 +130,10 @@ $('#tracking').click(() => {
                     $('#labelResult').append('<p>' + res + '</p>')
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#tracking').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#tracking').css('color', 'red')
                         $('#log').append('<p>' + response.data.data + '</p>')
                     }
@@ -147,5 +156,14 @@ $('#carrier').click(() => {
         $('#printLabel').click()
         $('#tracking').click()
         $('#tip').text(' ')
+
+
+        if (carrierStatus.every(it=>it===1)) {
+            $('#tracking').css('color', 'green')
+        } else {
+            $('#tracking').css('color', 'red')
+            $('#log').append('<p>' + response.data.data + '</p>')
+        }
+
     }, 10 * 1000)
 })
