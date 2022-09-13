@@ -1,7 +1,8 @@
 $('#createOrder').click(() => {
     for (var i in tableArr) {
         ((i) => {
-            var data = JSON.parse($('#createOrder').attr(`data-req${i}`))
+            var datareq = $('#createOrder').attr(`data-req${i}`)
+            var data = datareq && JSON.parse(datareq)
             data && axios.post('/createOrder', {
                 data,
                 authorization: $('#apitoken').val(),
@@ -75,7 +76,8 @@ $('#printLabel').click(() => {
 $('#rateQuery').click(() => {
     for (var i in tableArr) {
         ((i) => {
-            var data = JSON.parse($('#rateQuery').attr(`data-req${i}`))
+            var datareq = $('#rateQuery').attr(`data-req${i}`)
+            var data = datareq && JSON.parse(datareq)
             data && axios.post('/rateQuery', {
                 query: data,
                 authorization: $('#apitoken').val(),
@@ -104,7 +106,8 @@ $('#rateQuery').click(() => {
 $('#tracking').click(() => {
     for (var i in tableArr) {
         ((i) => {
-            var data = JSON.parse($('#tracking').attr(`data-req${i}`))
+            var datareq = $('#tracking').attr(`data-req${i}`)
+            var data = datareq && JSON.parse(datareq)
             data && axios.post('/tracking', {
                 query: data,
                 authorization: $('#apitoken').val(),
@@ -138,6 +141,6 @@ $('#carrier').click(() => {
     setTimeout(() => {
         $('#printLabel').click()
         $('#tracking').click()
-        $('#tip').text('')
+        $('#tip').text(' ')
     }, 10 * 1000)
 })

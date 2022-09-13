@@ -57,8 +57,8 @@ var param = {
 
 
 export default async function createOrder(url, authorization, body) {
-    body = body.map(it => {
-        return Object.assign(param, {
+    var data = body.map(it => {
+        return Object.assign({},param, {
             CustomerOrderNumber: it['CustomerOrderNumber'],
             ShippingMethodCode: it['ShippingMethodCode'],
             LabelType: it['label type'] || 'pdf',
@@ -86,12 +86,12 @@ export default async function createOrder(url, authorization, body) {
                     }
         })
     })
-    console.log('body*************************',JSON.stringify(body) )
+    console.log('body*************************', JSON.stringify(data) )
     try {
         const res = await axios({
             method: 'post',
             url,
-            data: body,
+            data,
             headers: {
                 Authorization: authorization,
                 'Content-Type': 'application/json;charset=UTF-8'

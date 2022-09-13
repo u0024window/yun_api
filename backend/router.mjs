@@ -62,9 +62,14 @@ app.post('/rateQuery', async function (req, res) {
             var result = await rateQuery(url, authorization, query[i])
             rateRes.push(result)
         }
-        var isSuccess = rateRes.every(it => it == '0000')
+        var isSuccess = rateRes.map(it =>{
+            if (it == '0000'){
+                return 'success'
+            }
+        }
+        )
         res.send({
-            result: rateRes,
+            result: isSuccess,
             code: 0
         })
     } catch {
@@ -82,9 +87,14 @@ app.post('/tracking', async function (req, res) {
             var result = await tracking(url, authorization, query[i])
             trankingres.push(result)
         }
-        var isSuccess = trankingres.every(it => it == '0000')
+        var isSuccess = trankingres.map(it => {
+            if (it == '0000') {
+                return 'success'
+            }
+        }
+        )
         res.send({
-            result: trankingres,
+            result: isSuccess,
             code: 0
         })
     } catch {
@@ -116,6 +126,6 @@ app.post('/login', (req, res) => {
 
 
 
-app.listen(8090, () => {
-    console.log('listen on 8090')
+app.listen(8080, () => {
+    console.log('listen on 8080')
 })
