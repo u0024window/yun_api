@@ -159,9 +159,9 @@ $('#carrier').click(() => {
 
 
         if (carrierStatus.every(it=>it===1)) {
-            $('#tracking').css('color', 'green')
+            $('#carrier').css('color', 'green')
         } else {
-            $('#tracking').css('color', 'red')
+            $('#carrier').css('color', 'red')
             $('#log').append('<p>' + response.data.data + '</p>')
         }
 
