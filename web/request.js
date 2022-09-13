@@ -10,14 +10,19 @@ $('#createOrder').click(() => {
             })
                 .then(function (response) {
                     var res = response.data.result
-                    var createOrderAttr = res[0]['Item'].map(it => {
-                        if (it['WayBillNumber']) {
-                            return it['WayBillNumber']
-                        } else {
-                            return 'Remark:' + it['Remark']
-                        }
+                    var createOrderAttr=[]
+                    res.forEach(it=>{
+                        var arr=it['Item'].map(it => {
+                            if (it['WayBillNumber']) {
+                                return it['WayBillNumber']
+                            } else {
+                                return 'Remark:' + it['Remark']
+                            }
 
+                        })
+                        createOrderAttr=createOrderAttr.concat(arr)
                     })
+                    console.log(createOrderAttr)
                     var resFilter = createOrderAttr.filter(it => !it.includes('Remark'))
                     $('#createOrder').attr(`data-res${i}`, JSON.stringify(resFilter))
                     $('#tracking').attr(`data-req${i}`, JSON.stringify(resFilter))
