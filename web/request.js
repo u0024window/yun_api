@@ -1,105 +1,132 @@
 $('#createOrder').click(() => {
-    localStorage.setItem('url', $('#createOrderUrl').val())
-    localStorage.setItem('authorization', $('#apitoken').val())
-    axios.post('/createOrder', {
-        data: JSON.parse($('#createOrder').attr('data-req')),
-        authorization: $('#apitoken').val(),
-        url: $('#createOrderUrl').val()
-    })
-        .then(function (response) {
-            var res = response.data.result
-            var createOrderAttr = res[0]['Item'].map(it => {
-                return it['WayBillNumber']
+    for (var i in tableArr) {
+        ((i) => {
+            var data = JSON.parse($('#createOrder').attr(`data-req${i}`))
+            data && axios.post('/createOrder', {
+                data,
+                authorization: $('#apitoken').val(),
+                url: $('#createOrderUrl').val()
             })
-            $('#createOrder').attr('data-res', JSON.stringify(createOrderAttr))
-            $('#tracking').attr('data-req', JSON.stringify(createOrderAttr))
-            $('#labelResult').append('<p>WayBillNumber:' + JSON.stringify(createOrderAttr) + "</p>")
+                .then(function (response) {
+                    var res = response.data.result
+                    var createOrderAttr = res[0]['Item'].map(it => {
+                        if (it['WayBillNumber']) {
+                            return it['WayBillNumber']
+                        } else {
+                            return 'Remark:' + it['Remark']
+                        }
 
-            if (response.data.code == '0') {
-                $('#createOrder').css('color', 'green')
-            } else {
-                $('#createOrder').css('color', 'red')
-                $('#log').append('<p>' + response.data.data+'</p>')
+                    })
+                    var resFilter = createOrderAttr.filter(it => !it.includes('Remark'))
+                    $('#createOrder').attr(`data-res${i}`, JSON.stringify(resFilter))
+                    $('#tracking').attr(`data-req${i}`, JSON.stringify(resFilter))
+                    $('#labelResult').append('<p>WayBillNumber:' + JSON.stringify(createOrderAttr) + "</p>")
 
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+                    if (response.data.code == '0') {
+                        $('#createOrder').css('color', 'green')
+                    } else {
+                        $('#createOrder').css('color', 'red')
+                        $('#log').append(`<p>table${i}` + response.data.data + '</p>')
+
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })(i)
+
+    }
 
 })
 
 $('#printLabel').click(() => {
-    var dataWayBillNumbers = JSON.parse($('#createOrder').attr('data-res'))
+    for (var i in tableArr) {
+        ((i) => {
+            var datares=$('#createOrder').attr(`data-res${i}`)
+            var data =datares && JSON.parse(datares)
+            console.log('#printLabel', data)
+            data && axios.post('/printLabel', {
+                data,
+                authorization: $('#apitoken').val(),
+                url: $('#printLabelUrl').val()
+            })
+                .then(function (response) {
+                    var res = response.data.result
+                    res.forEach(it => {
+                        $('#labelResult').append('<embed src=' + it.Url + '>')
+                    });
 
-    axios.post('/printLabel', {
-        data: dataWayBillNumbers,
-        authorization: $('#apitoken').val(),
-        url: $('#printLabelUrl').val()
-    })
-        .then(function (response) {
-            var res = response.data.result
-            res.forEach(it => {
-                $('#labelResult').append('<embed src=' + it.Url + '>')
-            });
+                    if (response.data.code == '0') {
+                        $('#printLabel').css('color', 'green')
+                    } else {
+                        $('#printLabel').css('color', 'red')
+                        $('#log').append('<p>' + response.data.data + '</p>')
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })(i)
 
-            if (response.data.code == '0') {
-                $('#printLabel').css('color', 'green')
-            } else {
-                $('#printLabel').css('color', 'red')
-                $('#log').append('<p>' + response.data.data + '</p>')
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    }
 
 })
 
 $('#rateQuery').click(() => {
-    axios.post('/rateQuery', {
-        query: JSON.parse($('#rateQuery').attr('data-req')),
-        authorization: $('#apitoken').val(),
-        url: $('#rateQueryUrl').val()
-    })
-        .then(function (response) {
-            var res = response.data.result
-            $('#labelResult').append('<p>' + res + '</p>')
+    for (var i in tableArr) {
+        ((i) => {
+            var data = JSON.parse($('#rateQuery').attr(`data-req${i}`))
+            data && axios.post('/rateQuery', {
+                query: data,
+                authorization: $('#apitoken').val(),
+                url: $('#rateQueryUrl').val()
+            })
+                .then(function (response) {
+                    var res = response.data.result
+                    $('#labelResult').append('<p>' + res + '</p>')
 
-            if (response.data.code == '0') {
-                $('#rateQuery').css('color', 'green')
-            } else {
-                $('#rateQuery').css('color', 'red')
-                $('#log').append('<p>' + response.data.data + '</p>')
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+                    if (response.data.code == '0') {
+                        $('#rateQuery').css('color', 'green')
+                    } else {
+                        $('#rateQuery').css('color', 'red')
+                        $('#log').append('<p>' + response.data.data + '</p>')
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })(i)
+    }
 
 })
 
 
 $('#tracking').click(() => {
-    axios.post('/tracking', {
-        query: JSON.parse($('#tracking').attr('data-req')),
-        authorization: $('#apitoken').val(),
-        url: $('#trackingUrl').val()
-    })
-        .then(function (response) {
-            var res = response.data.result
-            $('#labelResult').append('<p>' + res + '</p>')
+    for (var i in tableArr) {
+        ((i) => {
+            var data = JSON.parse($('#tracking').attr(`data-req${i}`))
+            data && axios.post('/tracking', {
+                query: data,
+                authorization: $('#apitoken').val(),
+                url: $('#trackingUrl').val()
+            })
+                .then(function (response) {
+                    var res = response.data.result
+                    $('#labelResult').append('<p>' + res + '</p>')
 
-            if (response.data.code == '0') {
-                $('#tracking').css('color', 'green')
-            } else {
-                $('#tracking').css('color', 'red')
-                $('#log').append('<p>' + response.data.data + '</p>')
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+                    if (response.data.code == '0') {
+                        $('#tracking').css('color', 'green')
+                    } else {
+                        $('#tracking').css('color', 'red')
+                        $('#log').append('<p>' + response.data.data + '</p>')
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })(i)
+
+    }
 
 })
 

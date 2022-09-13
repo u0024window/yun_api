@@ -1,5 +1,6 @@
-var excelData
+var excelData = []
 var columns
+var tableArr=[0,1,2,3]
 $('#input-excel').change(function (e) {
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -11,114 +12,53 @@ $('#input-excel').change(function (e) {
     const binarystr = new Uint8Array(e.target.result);
     const wb = XLSX.read(binarystr, { type: 'array', raw: true, cellFormula: false });
 
-    excelData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-    excelData1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[1]]);
-    excelData2 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[2]]);
-    excelData3 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[3]]);
-    console.log(excelData)
-    console.log(excelData1)
-    console.log(excelData2)
-    console.log(excelData3)
-    excelData = excelData.map(it => {
-      for (var key in it) {
-        if (it[key] && typeof (it[key]) != 'number') {
-          it[key]= it[key].replace(/"/g, '')
-        }
-      }
-      return it
-    })
-    console.log(excelData)
+    for (var i in tableArr) {
+      var data = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[i]])
+      excelData.push(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[i]]));
+      $('#createOrder').attr(`data-req${i}`, JSON.stringify(data))
 
-    //get Weight Receiver.Zip
-    var rateQueryParam = excelData.map(it=>{
-      return {
-        CountryCode:'US',
-        Weight: it['Weight'],
-        Length:1,
-        Width:1,
-        Height:1,
-        PackageType:0,
-        PostCode: it['Receiver.Zip'],
-        Origin:'CE'
-      }
-    })
-    console.log('rateQueryParam', rateQueryParam)
-    $('#rateQuery').attr('data-req', JSON.stringify(rateQueryParam))
-    columns = Object.keys(excelData[0]).map(it => {
-      if (it) {
+      var rateQueryParam = data.map(it => {
         return {
-          data: it.replace(/\./g, '\\.'),
-          title: it
+          CountryCode: 'US',
+          Weight: it['WEIGHT'],
+          Length: 1,
+          Width: 1,
+          Height: 1,
+          PackageType: 0,
+          PostCode: it['ZIP'],
+          Origin: 'CE'
         }
-      }
-    })
+      })
+      $('#rateQuery').attr(`data-req${i}`, JSON.stringify(rateQueryParam))
 
-    console.log(columns)
-
-
-    $('#excelTable').DataTable({
-      paging: false,
-      searching: false,
-      scrollX: true,
-      scrollY: true,
-      data: excelData,
-      columns: columns
-    });
-
-
-
-
-    const transformObj = obj => {
-      return Object.keys(obj).reduce((acc, key) => {
-        if (key.indexOf('.') >= 0) {
-          const [parentKey, childKey] = key.split('.');
-          acc[parentKey] = acc[parentKey] || {};
-          acc[parentKey][childKey] = obj[key];
-        } else {
-          acc[key] = obj[key];
+      var columns = Object.keys(data[0] || {}).map(it => {
+        if (it) {
+          return {
+            data: it,
+            title: it
+          }
         }
-        return acc;
-      }, {});
+      })
+
+      columns.length > 0 && $(`#excelTable${i}`).DataTable({
+        paging: false,
+        searching: false,
+        scrollX: true,
+        scrollY: true,
+        data: data,
+        columns: columns
+      });
+
+
+
     }
-
-    var reExData = excelData.map(it => {
-      var obj = transformObj(it)
-      obj.Parcels = [obj.Parcels]
-      return obj
-    })
-    $('#createOrder').attr('data-req', JSON.stringify(reExData))
-
-
-    console.log('transformObj', reExData);
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
 
 
   }
-
-
-
-
-
-
 })
 
 
-
-
-$(document).ready(function(){
+$(document).ready(function () {
   $('#createOrderUrl').val('https://gapi.yunexpressusa.com/api/WayBill/CreateOrder')
   $('#printLabelUrl').val('https://gapi.yunexpressusa.com/api/Label/Print')
   $('#rateQueryUrl').val('https://gapi.yunexpressusa.com/api/Freight/GetPriceTrial')
@@ -127,8 +67,6 @@ $(document).ready(function(){
 });
 
 
-
-
-$('#logClear').click(()=>{
+$('#logClear').click(() => {
   $('#labelResult').html('')
 })

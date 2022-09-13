@@ -56,11 +56,37 @@ var param = {
 
 
 
-
-
-
-
 export default async function createOrder(url, authorization, body) {
+    body = body.map(it => {
+        return Object.assign(param, {
+            CustomerOrderNumber: it['CustomerOrderNumber'],
+            ShippingMethodCode: it['ShippingMethodCode'],
+            LabelType: it['label type'] || 'pdf',
+            Weight: it['WEIGHT'],
+            Receiver: {
+                FirstName: it['RECEIVE'],
+                Street: it['ADDRESS'],
+                City: it['CITY'],
+                State: it['STATE'],
+                Zip: it['ZIP'],
+                "TaxId": "",
+                "CountryCode": "US",
+               // "FirstName": "MONIKASAS",//
+                "LastName": "",
+                "Company": "",
+              //  "Street": "MUSIKVAGEN 4",//
+                "StreetAddress1": "",
+                "StreetAddress2": "",
+              //  "City": "BROMOLLA",//
+              //  "State": "SKANE",//
+              //  "Zip": "29538",//
+                "Phone": "5204710145",
+                "HouseNumber": "",
+                "Email": "123456@qq.com"
+                    }
+        })
+    })
+    console.log('body*************************',JSON.stringify(body) )
     try {
         const res = await axios({
             method: 'post',

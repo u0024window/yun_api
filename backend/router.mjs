@@ -12,15 +12,26 @@ app.post('/createOrder', async function (req, res) {
     try {
         const { url, authorization, data } = req.body
         var result = []
-        var resData = await createOrder(url, authorization, data)
-        result.push(resData)
+        while (data.length > 0) {
+            var params
+            if (data.length > 30) {
+                params = data.splice(0, 30)
+            }else{
+                params = data.splice(0, data.length)
+            }
+            console.log(params)
+            var resData = await createOrder(url, authorization, params)
+            console.log('resData',resData)
+            
+            result.push(resData)
+        }
         res.send({
-            code:0,
+            code: 0,
             result: result
         })
     } catch {
         res.send({
-            code:1,
+            code: 1,
             message: 'error'
         })
     }
@@ -32,29 +43,29 @@ app.post('/printLabel', async function (req, res) {
         const { url, authorization, data } = req.body
         var result = await printLabel(url, authorization, data)
         res.send({
-            code:0,
-            result:result
+            code: 0,
+            result: result
         })
     } catch {
         res.send({
-            code:1,
+            code: 1,
             message: 'error'
         })
     }
 })
 
-app.post('/rateQuery',async function (req, res) {
-    var rateRes=[]
+app.post('/rateQuery', async function (req, res) {
+    var rateRes = []
     try {
         const { url, authorization, query } = req.body
-        for (var i = 0; i <query.length;i++){
+        for (var i = 0; i < query.length; i++) {
             var result = await rateQuery(url, authorization, query[i])
             rateRes.push(result)
         }
-        var isSuccess = rateRes.every(it=>it=='0000')
+        var isSuccess = rateRes.every(it => it == '0000')
         res.send({
             result: rateRes,
-            code:0
+            code: 0
         })
     } catch {
         res.send({
@@ -83,20 +94,20 @@ app.post('/tracking', async function (req, res) {
     }
 })
 
-app.post('/login',(req,res)=>{
-    try{
-        const {user,password}=req.body
-        if(user=='admin' && password=='8aW6ulnWBODgACm6'){
+app.post('/login', (req, res) => {
+    try {
+        const { user, password } = req.body
+        if (user == 'admin' && password == '8aW6ulnWBODgACm6') {
             res.send({
-                code:0,
-                message:'success'
+                code: 0,
+                message: 'success'
             })
         }
-        verfiy(user,password)
-    }catch{
+        verfiy(user, password)
+    } catch {
         res.send({
-            code:1,
-            message:'error'
+            code: 1,
+            message: 'error'
         })
     }
 })
@@ -105,6 +116,6 @@ app.post('/login',(req,res)=>{
 
 
 
-app.listen(8090,()=>{
+app.listen(8090, () => {
     console.log('listen on 8090')
 })
