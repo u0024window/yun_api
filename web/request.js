@@ -1,3 +1,4 @@
+var resCreateOrder=true
 $('#createOrder').click(() => {
     for (var i in tableArr) {
         ((i) => {
@@ -13,6 +14,7 @@ $('#createOrder').click(() => {
                         if (it['WayBillNumber']) {
                             return it['WayBillNumber']
                         } else {
+                            resCreateOrder=false
                             return 'Remark:' + it['Remark']
                         }
 
@@ -22,11 +24,11 @@ $('#createOrder').click(() => {
                     $('#tracking').attr(`data-req${i}`, JSON.stringify(resFilter))
                     $('#labelResult').append('<p>WayBillNumber:' + JSON.stringify(createOrderAttr) + "</p>")
 
-                    if (response.data.code == '0') {
+                    if (resCreateOrder) {
                         $('#createOrder').css('color', 'green')
                     } else {
                         $('#createOrder').css('color', 'red')
-                        $('#log').append(`<p>table${i}` + response.data.data + '</p>')
+                        //$('#log').append(`<p>table${i}` + response.data.data + '</p>')
 
                     }
                 })
