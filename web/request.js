@@ -1,8 +1,10 @@
-var resCreateOrder=true
+var carrierStatus=[]
+var resCreateOrderStatus=true
 $('#createOrder').click(() => {
     for (var i in tableArr) {
         ((i) => {
-            var data = JSON.parse($('#createOrder').attr(`data-req${i}`))
+            var datareq = $('#createOrder').attr(`data-req${i}`)
+            var data = datareq && JSON.parse(datareq)
             data && axios.post('/createOrder', {
                 data,
                 authorization: $('#apitoken').val(),
@@ -10,23 +12,30 @@ $('#createOrder').click(() => {
             })
                 .then(function (response) {
                     var res = response.data.result
-                    var createOrderAttr = res[0]['Item'].map(it => {
-                        if (it['WayBillNumber']) {
-                            return it['WayBillNumber']
-                        } else {
-                            resCreateOrder=false
-                            return 'Remark:' + it['Remark']
-                        }
+                    var createOrderAttr=[]
+                    res.forEach(it=>{
+                        var arr=it['Item'].map(it => {
+                            if (it['WayBillNumber']) {
+                                return it['WayBillNumber']
+                            } else {
+                                resCreateOrderStatus=false
+                                return 'Remark:' + it['Remark']
+                            }
 
+                        })
+                        createOrderAttr=createOrderAttr.concat(arr)
                     })
+                    console.log(createOrderAttr)
                     var resFilter = createOrderAttr.filter(it => !it.includes('Remark'))
                     $('#createOrder').attr(`data-res${i}`, JSON.stringify(resFilter))
                     $('#tracking').attr(`data-req${i}`, JSON.stringify(resFilter))
                     $('#labelResult').append('<p>WayBillNumber:' + JSON.stringify(createOrderAttr) + "</p>")
 
-                    if (resCreateOrder) {
+                    if (resCreateOrderStatus) {
+                        carrierStatus.push(1)
                         $('#createOrder').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#createOrder').css('color', 'red')
                         //$('#log').append(`<p>table${i}` + response.data.data + '</p>')
 
@@ -59,8 +68,10 @@ $('#printLabel').click(() => {
                     });
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#printLabel').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#printLabel').css('color', 'red')
                         $('#log').append('<p>' + response.data.data + '</p>')
                     }
@@ -77,7 +88,8 @@ $('#printLabel').click(() => {
 $('#rateQuery').click(() => {
     for (var i in tableArr) {
         ((i) => {
-            var data = JSON.parse($('#rateQuery').attr(`data-req${i}`))
+            var datareq = $('#rateQuery').attr(`data-req${i}`)
+            var data = datareq && JSON.parse(datareq)
             data && axios.post('/rateQuery', {
                 query: data,
                 authorization: $('#apitoken').val(),
@@ -88,8 +100,10 @@ $('#rateQuery').click(() => {
                     $('#labelResult').append('<p>' + res + '</p>')
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#rateQuery').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#rateQuery').css('color', 'red')
                         $('#log').append('<p>' + response.data.data + '</p>')
                     }
@@ -106,7 +120,8 @@ $('#rateQuery').click(() => {
 $('#tracking').click(() => {
     for (var i in tableArr) {
         ((i) => {
-            var data = JSON.parse($('#tracking').attr(`data-req${i}`))
+            var datareq = $('#tracking').attr(`data-req${i}`)
+            var data = datareq && JSON.parse(datareq)
             data && axios.post('/tracking', {
                 query: data,
                 authorization: $('#apitoken').val(),
@@ -117,8 +132,10 @@ $('#tracking').click(() => {
                     $('#labelResult').append('<p>' + res + '</p>')
 
                     if (response.data.code == '0') {
+                        carrierStatus.push(1)
                         $('#tracking').css('color', 'green')
                     } else {
+                        carrierStatus.push(0)
                         $('#tracking').css('color', 'red')
                         $('#log').append('<p>' + response.data.data + '</p>')
                     }
@@ -140,6 +157,15 @@ $('#carrier').click(() => {
     setTimeout(() => {
         $('#printLabel').click()
         $('#tracking').click()
-        $('#tip').text('')
+        $('#tip').text(' ')
+
+
+        if (carrierStatus.every(it=>it===1)) {
+            $('#carrier').css('color', 'green')
+        } else {
+            $('#carrier').css('color', 'red')
+            $('#log').append('<p>' + response.data.data + '</p>')
+        }
+
     }, 10 * 1000)
 })

@@ -13,7 +13,7 @@ export default async function printLabel(url, authorization, body) {
 
     });
     console.log(res.data['Item'])
-    return res.data['Item']
+    return res.data['Item'] || []
   } catch {
     return {
       message: 'error',
